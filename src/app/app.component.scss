@@ -1,0 +1,15 @@
+$footer-height: 3.5rem;
+
+main {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: calc(100vh - #{$footer-height});
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: $footer-height;
+}

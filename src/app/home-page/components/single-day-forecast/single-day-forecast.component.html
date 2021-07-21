@@ -1,0 +1,21 @@
+<section class="well flex" *ngIf="forecast">
+  <article>
+    <h3>{{forecast.city}} ({{forecast.zipCode}})</h3>
+    <h4>Current conditions: {{forecast.conditions}}</h4>
+    <h4>Temperatures today:</h4>
+    <p>
+      Current {{forecast.temperature}}
+      - Max {{forecast.temperatureMin}}
+      - Min {{forecast.temperatureMax}}
+    </p>
+    <p>
+      <a [routerLink]="'forecast/'+forecast.zipCode" [title]="'5 day forecast for '+forecast.city">
+        Show 5-day forecast for {{forecast.city}}
+      </a>
+    </p>
+  </article>
+  <article>
+    <button class="close" (click)="onRemove()">×</button>
+    <img [src]="forecast.conditions | weatherIcon" alt="weather conditions icon">
+  </article>
+</section>

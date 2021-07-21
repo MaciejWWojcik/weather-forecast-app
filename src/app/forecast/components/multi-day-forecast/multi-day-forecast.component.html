@@ -1,0 +1,15 @@
+<section class="panel panel-default" *ngIf="forecast">
+  <article class="panel-heading">
+    <h3 class="panel-title">5-day forecast for {{forecast[0].city}}</h3>
+  </article>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let dayForecast of forecast">
+      {{dayForecast.date | date:'EEEE, MMMM d:'}}
+      {{dayForecast.conditions}}
+      - Min: {{dayForecast.temperatureMin}}
+      - Max: {{dayForecast.temperatureMax}}
+      <img class="icon" [src]="dayForecast.conditions | weatherIcon" alt="weather conditions icon">
+    </li>
+  </ul>
+</section>
+<a class="btn btn-success" tabindex="0" routerLink="/">&lt; Back to main page</a>
