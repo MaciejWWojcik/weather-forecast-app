@@ -1,4 +1,4 @@
-<div class="well">
+<div class="card card-body bg-light mb-4">
   <h2>Enter a zipcode:</h2>
   <input class="form-control" placeholder="Zipcode" type="text" [formControl]="form">
   <ng-container *ngIf="form.hasError('pattern')" [ngTemplateOutlet]="error"
@@ -6,7 +6,11 @@
   <ng-container *ngIf="form.hasError('duplication')" [ngTemplateOutlet]="error"
                 [ngTemplateOutletContext]="{message: 'This zip code is already stored, please provide different one, or check weather forecast below'}"></ng-container>
   <br>
-  <button class="btn btn-primary" (click)="onAdd()">Add location</button>
+
+  <app-task-button [task$]="taskInProgress$" (onClick)="onAdd()">
+    <span>Add Location</span>
+    <span working>Adding</span>
+  </app-task-button>
 </div>
 
 <ng-template #error let-message="message">

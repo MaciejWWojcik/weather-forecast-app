@@ -1,0 +1,18 @@
+.btn-primary {
+  color: var(--button-color, #fff);
+  background-color: var(--button-background-color, #007bff);
+  border-color: var(--button-border-color, #007bff);
+}
+
+.btn-success {
+  color: var(--button-done-color, #fff);
+  background-color: var(--button-done-background-color, #28a745);
+  border-color: var(--button-done-border-color, #28a745);
+}
+
+.bi {
+  display: inline-block;
+  vertical-align: -.125em;
+  width: 1em;
+  height: 1em;
+}

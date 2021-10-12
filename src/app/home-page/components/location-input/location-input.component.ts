@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { AbstractControl, FormControl, Validators } from '@angular/forms';
 import { LocationsService } from '../../../services/locations.service';
 import { ZipCode } from '../../../models/zip-code';
+import { Observable } from 'rxjs';
 
 const zipCodeUSPattern = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
 
@@ -21,9 +22,10 @@ const zipCodeDuplicationsValidator = (locations: LocationsService) => {
 })
 export class LocationInputComponent {
 
+  @Input('task$') taskInProgress$: Observable<boolean> | undefined;
   @Output() zipCode: EventEmitter<ZipCode> = new EventEmitter<ZipCode>();
 
-  form: FormControl = new FormControl('', {
+  readonly form: FormControl = new FormControl('', {
     validators: [
       Validators.pattern(zipCodeUSPattern),
       zipCodeDuplicationsValidator(this.locations),

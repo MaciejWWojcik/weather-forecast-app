@@ -1,8 +1,8 @@
-<section class="well flex" *ngIf="forecast">
+<section class="card card-body bg-light flex mb-2" *ngIf="forecast">
   <article>
     <h3>{{forecast.city}} ({{forecast.zipCode}})</h3>
-    <h4>Current conditions: {{forecast.conditions}}</h4>
-    <h4>Temperatures today:</h4>
+    <h5>Current conditions: {{forecast.conditions}}</h5>
+    <h5>Temperatures today:</h5>
     <p>
       Current {{forecast.temperature}}
       - Max {{forecast.temperatureMin}}
