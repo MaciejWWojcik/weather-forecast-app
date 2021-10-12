@@ -4,7 +4,8 @@ import { ZipCode } from '../models/zip-code';
 import { BrowserStorageService } from './browser-storage.service';
 import { WeatherApiService } from './weather-api.service';
 import { DayForecast } from '../models/day-forecast';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
+import { refresher } from './observable-utils/refresher';
 
 const ZipCodeStorageKey = 'zip-code-storage-key';
 
@@ -25,8 +26,12 @@ export class LocationsService {
 
   get weatherForecast$(): Observable<Observable<DayForecast>[]> {
     // I'm not using switchMap to flatten Observables because I don't want to force waiting for all data to display anything
+
+    const forecast$ = (zipCode: ZipCode) => this.weatherApi.getCurrentWeather(zipCode);
+    const inInterval = (zipCode: ZipCode) => refresher().pipe(switchMap(() => forecast$(zipCode)));
+
     return this.locations$.pipe(
-      map(locations => locations.map(zipCode => this.weatherApi.getCurrentWeather(zipCode))),
+      map(locations => locations.map(inInterval)),
     );
   }
 
