@@ -4,7 +4,7 @@
   <ng-container *ngFor="let forecast$ of weatherForecast">
     <ng-container *ngIf="forecast$ | async as forecast">
       <app-single-day-forecast [forecast]="forecast"
-                               (remove)="removeLocation(forecast.zipCode)"
+                               (remove)="removeLocation(forecast.zipCode, forecast.countryCode)"
                                (ready)="onReady(forecast.zipCode)"></app-single-day-forecast>
     </ng-container>
   </ng-container>

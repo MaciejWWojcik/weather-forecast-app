@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ZipCode } from '../models/zip-code';
 import { BrowserStorageService } from './browser-storage.service';
 import { WeatherApiService } from './weather-api.service';
 import { DayForecast } from '../models/day-forecast';
 import { map, switchMap } from 'rxjs/operators';
 import { refresher } from './observable-utils/refresher';
+import { Location } from '../models/location';
+import { ZipCode } from '../models/zip-code';
 
 const ZipCodeStorageKey = 'zip-code-storage-key';
 
@@ -14,21 +15,20 @@ const ZipCodeStorageKey = 'zip-code-storage-key';
 })
 export class LocationsService {
 
-  private readonly locations: BehaviorSubject<ZipCode[]> = new BehaviorSubject<ZipCode[]>([]);
+  private readonly locations: BehaviorSubject<Location[]> = new BehaviorSubject<Location[]>([]);
 
-  get currentLocations(): ZipCode[] {
+  get currentLocations(): Location[] {
     return this.locations.value;
   }
 
-  get locations$(): Observable<ZipCode[]> {
+  get locations$(): Observable<Location[]> {
     return this.locations.asObservable();
   }
 
   get weatherForecast$(): Observable<Observable<DayForecast>[]> {
     // I'm not using switchMap to flatten Observables because I don't want to force waiting for all data to display anything
-
-    const forecast$ = (zipCode: ZipCode) => this.weatherApi.getCurrentWeather(zipCode);
-    const inInterval = (zipCode: ZipCode) => refresher().pipe(switchMap(() => forecast$(zipCode)));
+    const forecast$ = (location: Location) => this.weatherApi.getCurrentWeather(location.zipCode, location.countryCode);
+    const inInterval = (location: Location) => refresher().pipe(switchMap(() => forecast$(location)));
 
     return this.locations$.pipe(
       map(locations => locations.map(inInterval)),
@@ -46,21 +46,22 @@ export class LocationsService {
     }
   }
 
-  addLocation(zipCode: ZipCode): void {
-    const locations = [...this.currentLocations, zipCode];
+  addLocation(location: Location): void {
+    const locations = [...this.currentLocations, location];
     this.locations.next(locations);
     this.storage.set(ZipCodeStorageKey, JSON.stringify(locations));
   }
 
-  removeLocation(zipCode: ZipCode): void {
+  removeLocation(location: Location): void {
     const locations = [...this.currentLocations];
-    const index = locations.indexOf(zipCode);
+    const index = locations.findIndex(e => e.zipCode === location.zipCode && e.countryCode === location.countryCode);
     locations.splice(index, 1);
     this.locations.next(locations);
     this.storage.set(ZipCodeStorageKey, JSON.stringify(locations));
   }
 
   hasLocation(zipCode: ZipCode): boolean {
-    return this.currentLocations.includes(zipCode);
+    return this.currentLocations.some(e => e.zipCode === zipCode);
+
   }
 }

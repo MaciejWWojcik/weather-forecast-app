@@ -1,0 +1,30 @@
+:host {
+  display: block;
+  position: relative;
+}
+
+ul {
+  position: absolute;
+  bottom: 0;
+  max-height: 180px;
+  max-width: 100%;
+  background-color: white;
+  border: 1px solid #b0bec5;
+  overflow-y: auto;
+  transform: translateY(100%);
+  margin: 0;
+  list-style: none;
+  padding: 0;
+  z-index: 1000;
+  box-shadow: 8px 22px 28px -15px rgba(66, 68, 90, 1);
+}
+
+li {
+  padding: 8px;
+  cursor: pointer;
+  min-width: 180px;
+
+  &:hover {
+    background-color: #e3f2fd;
+  }
+}

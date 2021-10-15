@@ -9,7 +9,7 @@
       - Min {{forecast.temperatureMax}}
     </p>
     <p>
-      <a [routerLink]="'forecast/'+forecast.zipCode" [title]="'5 day forecast for '+forecast.city">
+      <a [routerLink]="'forecast/'+forecast.zipCode+'/'+forecast.countryCode" [title]="'5 day forecast for '+forecast.city">
         Show 5-day forecast for {{forecast.city}}
       </a>
     </p>

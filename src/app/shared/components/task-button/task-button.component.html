@@ -1,6 +1,6 @@
 <ng-container *ngIf="state$ | async as state" [ngSwitch]="state">
 
-  <button *ngSwitchCase="State.Default" class="btn btn-primary" (click)="onClick($event)">
+  <button *ngSwitchCase="State.Default" class="btn btn-primary" (click)="onClick($event)" [disabled]="disabled">
     <span #ref><ng-content></ng-content></span>
     <span *ngIf="ref.childNodes.length == 0">Click</span>
   </button>

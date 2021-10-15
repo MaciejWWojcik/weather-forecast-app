@@ -6,6 +6,7 @@ export interface DayForecast {
   temperatureMax: number;
   city: string;
   zipCode: string;
+  countryCode: string;
   conditions: WeatherConditions;
   date: Date;
 }

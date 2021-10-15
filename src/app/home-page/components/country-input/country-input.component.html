@@ -1,0 +1,16 @@
+<input class="form-control" placeholder="Enter country" type="text"
+       [formControl]="autocompleteForm"
+       (focusin)="showOptions = true">
+
+<ng-container *ngIf="options$ | async as options">
+  <ul *ngIf="showOptions">
+    <li *ngFor="let option of options"
+        (click)="onChange(option)"
+        [innerHTML]="option.name | boldFragment:autocompleteForm.value">
+    </li>
+  </ul>
+</ng-container>
+
+<div class="alert alert-warning mt-2" role="alert" *ngIf="error">
+  Please provide a valid Country
+</div>

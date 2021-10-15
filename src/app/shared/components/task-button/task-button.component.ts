@@ -15,6 +15,7 @@ enum State {
 })
 export class TaskButtonComponent implements OnInit {
 
+  @Input() disabled: boolean = false;
   @Input('task$') taskInProgress$: Observable<boolean> | undefined;
   @Output('onClick') clickEvent: EventEmitter<Event> = new EventEmitter<Event>();
 

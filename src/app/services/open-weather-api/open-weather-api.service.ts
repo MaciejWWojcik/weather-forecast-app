@@ -19,10 +19,10 @@ export class OpenWeatherApiService extends WeatherApiService {
     super();
   }
 
-  getCurrentWeather(zipCode: string): Observable<DayForecast> {
+  getCurrentWeather(zipCode: string, countryCode: string): Observable<DayForecast> {
     // https://api.openweathermap.org/data/2.5/weather?zip=94040&appid=5a4b2d457ecbef9eb2a71e480b947604
     const url = 'https://api.openweathermap.org/data/2.5/weather';
-    const params = this.getParams(zipCode);
+    const params = this.getParams(zipCode, countryCode);
     return this.http.get<OpenWeatherSingleDay>(url, { params }).pipe(
       map(data => ({
         temperature: data.main.temp,
@@ -32,14 +32,15 @@ export class OpenWeatherApiService extends WeatherApiService {
         conditions: conditionsConverter(data.weather[0]),
         date: new Date(data.dt),
         zipCode,
+        countryCode,
       }))
     );
   }
 
-  getWeatherForecast(zipCode: string): Observable<DayForecast[]> {
+  getWeatherForecast(zipCode: string, countryCode: string): Observable<DayForecast[]> {
     // https://api.openweathermap.org/data/2.5/forecast/daily?zip=94040&appid=5a4b2d457ecbef9eb2a71e480b947604
     const url = 'https://api.openweathermap.org/data/2.5/forecast/daily';
-    const params = this.getParams(zipCode);
+    const params = this.getParams(zipCode, countryCode);
     return this.http.get<OpenWeatherMultiDays>(url, { params }).pipe(
       map(data => data.list.map(dayData => ({
         temperature: dayData.temp.day,
@@ -49,14 +50,15 @@ export class OpenWeatherApiService extends WeatherApiService {
         conditions: conditionsConverter(dayData.weather[0]),
         date: new Date(dayData.dt * 1000),
         zipCode,
+        countryCode,
       })))
     );
   }
 
-  private getParams(zip: string): HttpParams {
+  private getParams(zip: string, country: string = 'us'): HttpParams {
     return new HttpParams({
       fromObject: {
-        zip,
+        zip: `${zip},${country}`,
         appid: this.config.apiKey,
       }
     });

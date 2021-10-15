@@ -6,6 +6,7 @@ import { LocationInputComponent } from './components/location-input/location-inp
 import { SingleDayForecastComponent } from './components/single-day-forecast/single-day-forecast.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { CountryInputComponent } from './components/country-input/country-input.component';
 
 
 @NgModule({
@@ -13,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     HomePageComponent,
     LocationInputComponent,
     SingleDayForecastComponent,
+    CountryInputComponent,
   ],
   imports: [
     CommonModule,

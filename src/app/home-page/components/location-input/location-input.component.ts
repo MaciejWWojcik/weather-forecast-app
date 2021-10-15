@@ -1,10 +1,8 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
-import { AbstractControl, FormControl, Validators } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { LocationsService } from '../../../services/locations.service';
-import { ZipCode } from '../../../models/zip-code';
 import { Observable } from 'rxjs';
-
-const zipCodeUSPattern = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+import { Location } from '../../../models/location';
 
 const zipCodeDuplicationsValidator = (locations: LocationsService) => {
   return (control: AbstractControl): { [key: string]: boolean } | null => {
@@ -23,15 +21,22 @@ const zipCodeDuplicationsValidator = (locations: LocationsService) => {
 export class LocationInputComponent {
 
   @Input('task$') taskInProgress$: Observable<boolean> | undefined;
-  @Output() zipCode: EventEmitter<ZipCode> = new EventEmitter<ZipCode>();
+  @Output() zipCode: EventEmitter<Location> = new EventEmitter<Location>();
 
-  readonly form: FormControl = new FormControl('', {
-    validators: [
-      Validators.pattern(zipCodeUSPattern),
-      zipCodeDuplicationsValidator(this.locations),
-    ],
-    updateOn: 'blur'
-  });
+  readonly form: FormGroup = new FormGroup(
+    {
+      zipcode: new FormControl('', {
+        validators: [
+          Validators.required,
+          zipCodeDuplicationsValidator(this.locations),
+        ],
+        updateOn: 'blur'
+      }),
+      country: new FormControl('us', [
+        Validators.required,
+      ]),
+    }
+  );
 
   constructor(
     private readonly locations: LocationsService,
@@ -40,7 +45,9 @@ export class LocationInputComponent {
 
   onAdd() {
     if (this.form.valid) {
-      this.zipCode.emit(this.form.value);
+      const zipCode = this.form.value.zipcode;
+      const countryCode = this.form.value.country;
+      this.zipCode.emit({ zipCode, countryCode });
       this.form.reset();
     }
   }

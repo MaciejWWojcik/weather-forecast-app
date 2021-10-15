@@ -4,6 +4,7 @@ import { DayForecast } from '../../../models/day-forecast';
 import { LocationsService } from '../../../services/locations.service';
 import { ZipCode } from '../../../models/zip-code';
 import { distinctUntilChanged, map } from 'rxjs/operators';
+import { Location } from '../../../models/location';
 
 @Component({
   selector: 'app-home-page',
@@ -31,13 +32,13 @@ export class HomePageComponent implements OnInit {
     this.weatherForecast$ = this.locations.weatherForecast$;
   }
 
-  addLocation(zipCode: ZipCode): void {
-    this.inProgress.next(zipCode);
-    this.locations.addLocation(zipCode);
+  addLocation(location: Location): void {
+    this.inProgress.next(location.zipCode);
+    this.locations.addLocation(location);
   }
 
-  removeLocation(zipCode: ZipCode): void {
-    this.locations.removeLocation(zipCode);
+  removeLocation(zipCode: ZipCode, countryCode: string): void {
+    this.locations.removeLocation({ zipCode, countryCode });
   }
 
   onReady(zipCode: ZipCode) {
