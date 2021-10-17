@@ -1,9 +1,9 @@
 <form class="card card-body bg-light mb-4" [formGroup]="form">
-  <h2>Enter a zipcode:</h2>
+  <h2>Enter a location:</h2>
   <input class="form-control mb-4" placeholder="Zipcode" type="text" formControlName="zipcode">
-  <ng-container *ngIf="form.hasError('pattern')" [ngTemplateOutlet]="error"
+  <ng-container *ngIf="form.controls.zipcode.hasError('pattern')" [ngTemplateOutlet]="error"
                 [ngTemplateOutletContext]="{message: 'Provided zip code is not a valid US code, please provide valid one.'}"></ng-container>
-  <ng-container *ngIf="form.hasError('duplication')" [ngTemplateOutlet]="error"
+  <ng-container *ngIf="form.controls.zipcode.hasError('duplication')" [ngTemplateOutlet]="error"
                 [ngTemplateOutletContext]="{message: 'This zip code is already stored, please provide different one, or check weather forecast below'}"></ng-container>
 
   <app-country-input class="mb-4" formControlName="country"></app-country-input>

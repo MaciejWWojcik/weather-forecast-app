@@ -36,7 +36,7 @@ export class CountryInputComponent implements ControlValueAccessor {
       distinctUntilChanged(),
       tap(searchTerm => this.handleOptionsShow(searchTerm)),
       map(searchTerm => countries.filter(country => country.name.toLowerCase().includes(searchTerm))),
-      tap(options => this.error = options.length === 0 && this.autocompleteForm.value.length !== 0),
+      tap(options => this.error = options.length === 0 && this.autocompleteForm.value?.length !== 0),
     );
   }
 

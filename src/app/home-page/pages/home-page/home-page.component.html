@@ -1,4 +1,4 @@
-<app-location-input [task$]="inProgress$" (zipCode)="addLocation($event)"></app-location-input>
+<app-location-input [task$]="inProgress$" (location)="addLocation($event)"></app-location-input>
 
 <ng-container *ngIf="weatherForecast$ | async as weatherForecast">
   <ng-container *ngFor="let forecast$ of weatherForecast">

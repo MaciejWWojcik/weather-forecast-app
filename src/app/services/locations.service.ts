@@ -26,10 +26,10 @@ export class LocationsService {
   }
 
   get weatherForecast$(): Observable<Observable<DayForecast>[]> {
-    // I'm not using switchMap to flatten Observables because I don't want to force waiting for all data to display anything
     const forecast$ = (location: Location) => this.weatherApi.getCurrentWeather(location.zipCode, location.countryCode);
     const inInterval = (location: Location) => refresher().pipe(switchMap(() => forecast$(location)));
 
+    // I'm not using switchMap to flatten Observables because I don't want to force waiting for all data to display anything
     return this.locations$.pipe(
       map(locations => locations.map(inInterval)),
     );

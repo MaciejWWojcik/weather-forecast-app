@@ -21,7 +21,7 @@ const zipCodeDuplicationsValidator = (locations: LocationsService) => {
 export class LocationInputComponent {
 
   @Input('task$') taskInProgress$: Observable<boolean> | undefined;
-  @Output() zipCode: EventEmitter<Location> = new EventEmitter<Location>();
+  @Output() location: EventEmitter<Location> = new EventEmitter<Location>();
 
   readonly form: FormGroup = new FormGroup(
     {
@@ -32,7 +32,7 @@ export class LocationInputComponent {
         ],
         updateOn: 'blur'
       }),
-      country: new FormControl('us', [
+      country: new FormControl('', [
         Validators.required,
       ]),
     }
@@ -47,8 +47,8 @@ export class LocationInputComponent {
     if (this.form.valid) {
       const zipCode = this.form.value.zipcode;
       const countryCode = this.form.value.country;
-      this.zipCode.emit({ zipCode, countryCode });
-      this.form.reset();
+      this.location.emit({ zipCode, countryCode });
+      this.form.controls.zipcode.reset();
     }
   }
 
